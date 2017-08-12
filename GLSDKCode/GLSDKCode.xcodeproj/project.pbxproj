@@ -10,6 +10,22 @@
 		ACBEF4DB1F3DDDC800376051 /* GLSDKCode.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACBEF4D11F3DDDC800376051 /* GLSDKCode.framework */; };
 		ACBEF4E01F3DDDC800376051 /* GLSDKCodeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBEF4DF1F3DDDC800376051 /* GLSDKCodeTests.m */; };
 		ACBEF4E21F3DDDC800376051 /* GLSDKCode.h in Headers */ = {isa = PBXBuildFile; fileRef = ACBEF4D41F3DDDC800376051 /* GLSDKCode.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ACBEF5B01F3E013A00376051 /* CTMediaPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = ACBEF5AE1F3E013A00376051 /* CTMediaPlayer.h */; };
+		ACBEF5B11F3E013A00376051 /* CTMediaPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBEF5AF1F3E013A00376051 /* CTMediaPlayer.m */; };
+		ACBEF5B41F3E07A600376051 /* CTEAGLLayer.h in Headers */ = {isa = PBXBuildFile; fileRef = ACBEF5B21F3E07A600376051 /* CTEAGLLayer.h */; };
+		ACBEF5B51F3E07A600376051 /* CTEAGLLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBEF5B31F3E07A600376051 /* CTEAGLLayer.m */; };
+		ACBEF5B81F3EB5A800376051 /* shader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = ACBEF5B61F3EB5A800376051 /* shader.fsh */; };
+		ACBEF5B91F3EB5A800376051 /* shader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = ACBEF5B71F3EB5A800376051 /* shader.vsh */; };
+		ACBEF5BC1F3EB79800376051 /* CTGLPrimitiveModel.h in Headers */ = {isa = PBXBuildFile; fileRef = ACBEF5BA1F3EB79800376051 /* CTGLPrimitiveModel.h */; };
+		ACBEF5BD1F3EB79800376051 /* CTGLPrimitiveModel.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBEF5BB1F3EB79800376051 /* CTGLPrimitiveModel.m */; };
+		ACBEF5C01F3EBD9500376051 /* CTGLShaderModel.h in Headers */ = {isa = PBXBuildFile; fileRef = ACBEF5BE1F3EBD9500376051 /* CTGLShaderModel.h */; };
+		ACBEF5C11F3EBD9500376051 /* CTGLShaderModel.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBEF5BF1F3EBD9500376051 /* CTGLShaderModel.m */; };
+		ACBEF5C41F3EC34000376051 /* CTGLSettingModel.h in Headers */ = {isa = PBXBuildFile; fileRef = ACBEF5C21F3EC34000376051 /* CTGLSettingModel.h */; };
+		ACBEF5C51F3EC34000376051 /* CTGLSettingModel.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBEF5C31F3EC34000376051 /* CTGLSettingModel.m */; };
+		ACBEF5C81F3F49F900376051 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACBEF5C71F3F49F900376051 /* OpenGLES.framework */; };
+		ACBEF5CA1F3F56EA00376051 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACBEF5C91F3F56EA00376051 /* GLKit.framework */; };
+		ACBEF5CC1F3F572700376051 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACBEF5CB1F3F572700376051 /* QuartzCore.framework */; };
+		ACBEF5CE1F3F573400376051 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACBEF5CD1F3F573400376051 /* CoreGraphics.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,6 +45,22 @@
 		ACBEF4DA1F3DDDC800376051 /* GLSDKCodeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GLSDKCodeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		ACBEF4DF1F3DDDC800376051 /* GLSDKCodeTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GLSDKCodeTests.m; sourceTree = "<group>"; };
 		ACBEF4E11F3DDDC800376051 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		ACBEF5AE1F3E013A00376051 /* CTMediaPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTMediaPlayer.h; sourceTree = "<group>"; };
+		ACBEF5AF1F3E013A00376051 /* CTMediaPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CTMediaPlayer.m; sourceTree = "<group>"; };
+		ACBEF5B21F3E07A600376051 /* CTEAGLLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTEAGLLayer.h; sourceTree = "<group>"; };
+		ACBEF5B31F3E07A600376051 /* CTEAGLLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CTEAGLLayer.m; sourceTree = "<group>"; };
+		ACBEF5B61F3EB5A800376051 /* shader.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = shader.fsh; sourceTree = "<group>"; };
+		ACBEF5B71F3EB5A800376051 /* shader.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = shader.vsh; sourceTree = "<group>"; };
+		ACBEF5BA1F3EB79800376051 /* CTGLPrimitiveModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTGLPrimitiveModel.h; sourceTree = "<group>"; };
+		ACBEF5BB1F3EB79800376051 /* CTGLPrimitiveModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CTGLPrimitiveModel.m; sourceTree = "<group>"; };
+		ACBEF5BE1F3EBD9500376051 /* CTGLShaderModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTGLShaderModel.h; sourceTree = "<group>"; };
+		ACBEF5BF1F3EBD9500376051 /* CTGLShaderModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CTGLShaderModel.m; sourceTree = "<group>"; };
+		ACBEF5C21F3EC34000376051 /* CTGLSettingModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTGLSettingModel.h; sourceTree = "<group>"; };
+		ACBEF5C31F3EC34000376051 /* CTGLSettingModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CTGLSettingModel.m; sourceTree = "<group>"; };
+		ACBEF5C71F3F49F900376051 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		ACBEF5C91F3F56EA00376051 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		ACBEF5CB1F3F572700376051 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		ACBEF5CD1F3F573400376051 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -36,6 +68,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ACBEF5CE1F3F573400376051 /* CoreGraphics.framework in Frameworks */,
+				ACBEF5CC1F3F572700376051 /* QuartzCore.framework in Frameworks */,
+				ACBEF5CA1F3F56EA00376051 /* GLKit.framework in Frameworks */,
+				ACBEF5C81F3F49F900376051 /* OpenGLES.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -56,6 +92,7 @@
 				ACBEF4D31F3DDDC800376051 /* GLSDKCode */,
 				ACBEF4DE1F3DDDC800376051 /* GLSDKCodeTests */,
 				ACBEF4D21F3DDDC800376051 /* Products */,
+				ACBEF5C61F3F49F800376051 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -71,6 +108,8 @@
 		ACBEF4D31F3DDDC800376051 /* GLSDKCode */ = {
 			isa = PBXGroup;
 			children = (
+				ACBEF5A91F3DF7F900376051 /* OpenGL */,
+				ACBEF5A81F3DF7DB00376051 /* MediaPlayer */,
 				ACBEF4D41F3DDDC800376051 /* GLSDKCode.h */,
 				ACBEF4D51F3DDDC800376051 /* Info.plist */,
 			);
@@ -86,6 +125,43 @@
 			path = GLSDKCodeTests;
 			sourceTree = "<group>";
 		};
+		ACBEF5A81F3DF7DB00376051 /* MediaPlayer */ = {
+			isa = PBXGroup;
+			children = (
+				ACBEF5AE1F3E013A00376051 /* CTMediaPlayer.h */,
+				ACBEF5AF1F3E013A00376051 /* CTMediaPlayer.m */,
+				ACBEF5B21F3E07A600376051 /* CTEAGLLayer.h */,
+				ACBEF5B31F3E07A600376051 /* CTEAGLLayer.m */,
+			);
+			name = MediaPlayer;
+			sourceTree = "<group>";
+		};
+		ACBEF5A91F3DF7F900376051 /* OpenGL */ = {
+			isa = PBXGroup;
+			children = (
+				ACBEF5B61F3EB5A800376051 /* shader.fsh */,
+				ACBEF5B71F3EB5A800376051 /* shader.vsh */,
+				ACBEF5BA1F3EB79800376051 /* CTGLPrimitiveModel.h */,
+				ACBEF5BB1F3EB79800376051 /* CTGLPrimitiveModel.m */,
+				ACBEF5BE1F3EBD9500376051 /* CTGLShaderModel.h */,
+				ACBEF5BF1F3EBD9500376051 /* CTGLShaderModel.m */,
+				ACBEF5C21F3EC34000376051 /* CTGLSettingModel.h */,
+				ACBEF5C31F3EC34000376051 /* CTGLSettingModel.m */,
+			);
+			name = OpenGL;
+			sourceTree = "<group>";
+		};
+		ACBEF5C61F3F49F800376051 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				ACBEF5CD1F3F573400376051 /* CoreGraphics.framework */,
+				ACBEF5CB1F3F572700376051 /* QuartzCore.framework */,
+				ACBEF5C91F3F56EA00376051 /* GLKit.framework */,
+				ACBEF5C71F3F49F900376051 /* OpenGLES.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -94,6 +170,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				ACBEF4E21F3DDDC800376051 /* GLSDKCode.h in Headers */,
+				ACBEF5B41F3E07A600376051 /* CTEAGLLayer.h in Headers */,
+				ACBEF5C01F3EBD9500376051 /* CTGLShaderModel.h in Headers */,
+				ACBEF5C41F3EC34000376051 /* CTGLSettingModel.h in Headers */,
+				ACBEF5BC1F3EB79800376051 /* CTGLPrimitiveModel.h in Headers */,
+				ACBEF5B01F3E013A00376051 /* CTMediaPlayer.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -180,6 +261,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ACBEF5B91F3EB5A800376051 /* shader.vsh in Resources */,
+				ACBEF5B81F3EB5A800376051 /* shader.fsh in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -197,6 +280,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ACBEF5B11F3E013A00376051 /* CTMediaPlayer.m in Sources */,
+				ACBEF5C51F3EC34000376051 /* CTGLSettingModel.m in Sources */,
+				ACBEF5BD1F3EB79800376051 /* CTGLPrimitiveModel.m in Sources */,
+				ACBEF5C11F3EBD9500376051 /* CTGLShaderModel.m in Sources */,
+				ACBEF5B51F3E07A600376051 /* CTEAGLLayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -328,6 +416,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = GLSDKCode/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.netviewtech.GLSDKCode;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -346,6 +435,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = GLSDKCode/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.netviewtech.GLSDKCode;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -394,6 +484,7 @@
 				ACBEF4E71F3DDDC800376051 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		ACBEF4E81F3DDDC800376051 /* Build configuration list for PBXNativeTarget "GLSDKCodeTests" */ = {
 			isa = XCConfigurationList;
@@ -402,6 +493,7 @@
 				ACBEF4EA1F3DDDC800376051 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
