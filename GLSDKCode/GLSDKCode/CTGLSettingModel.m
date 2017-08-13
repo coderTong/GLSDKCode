@@ -9,15 +9,14 @@
 #import "CTGLSettingModel.h"
 #import "CTGLShaderModel.h"
 #import "CTGLPrimitiveModel.h"
+
 static const GLfloat kColorConversion601[] = {
     1.164,  1.164,  1.164,
     0.0,    -0.392, 2.017,
     1.596,  -0.813, 0.0,
     
 };
-// Uniform index.
 
-// BT.709, which is the standard for HDTV.
 static const GLfloat kColorConversion709[] = {
     1.164,  1.164, 1.164,
     0.0, -0.213, 2.112,
@@ -90,24 +89,21 @@ static const GLfloat kColorConversion709[] = {
 
 
 # pragma mark - OpenGL setup
-// 转屏会再来处理buffer
 - (void)setupBuffers
 {
-    // 1.1创建帧缓存 Framebuffer可以包含多个Renderbuffer对象
+    
     glGenFramebuffers(1, &_frameBufferHandle);
     glBindFramebuffer(GL_FRAMEBUFFER, _frameBufferHandle);
     
-    // 创建深度缓存
+    
     glGenRenderbuffers(1, &_depthbufferHandle);
     
-    //     1.2创建渲染缓存 (Renderbuffer有三种:  color Renderbuffer, depth Renderbuffer, stencil Renderbuffer.)
     glGenRenderbuffers(1, &_colorBufferHandle);
     glBindRenderbuffer(GL_RENDERBUFFER, _colorBufferHandle);
     
     if (self.delegate && [self.delegate respondsToSelector:@selector(renderbufferStorage)]) {
         [self.delegate renderbufferStorage];
     }
-    
     
     glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_WIDTH, &_backingWidth);
     glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_HEIGHT, &_backingHeight);
@@ -199,16 +195,12 @@ static const GLfloat kColorConversion709[] = {
     
 }
 
-
-
-
 - (void)updateDrawElement
 {
     glBindFramebuffer(GL_FRAMEBUFFER, _frameBufferHandle);
     glBindRenderbuffer(GL_RENDERBUFFER, _depthbufferHandle);
     glBindRenderbuffer(GL_RENDERBUFFER, _colorBufferHandle);
     
-    // Set the view port to the entire view.
     glViewport(0, 0, _backingWidth, _backingHeight);
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -226,9 +218,8 @@ static const GLfloat kColorConversion709[] = {
 
 - (void)updatePreferredConversionWith:(CVPixelBufferRef)pixelBuffer
 {
-    // Use the color attachment of the pixel buffer to determine the appropriate color conversion matrix.
+    
     CFTypeRef colorAttachments = CVBufferGetAttachment(pixelBuffer, kCVImageBufferYCbCrMatrixKey, NULL);
-    //        NSLog(@"color matrix: %@",colorAttachments);
     if (colorAttachments == kCVImageBufferYCbCrMatrix_ITU_R_601_4) {
         _preferredConversion = kColorConversion601;
     }
@@ -247,7 +238,7 @@ static const GLfloat kColorConversion709[] = {
     glEnableVertexAttribArray(self.shaderModel.vertexTexCoordAttributeIndex);
     glVertexAttribPointer(self.shaderModel.vertexTexCoordAttributeIndex, 2, GL_FLOAT, GL_FALSE, sizeof(GLfloat)*2, NULL);
     
-    if (self.primitiveModel.primitiveModelType == CT_GLKVCItemTypeRectangle){// 圆
+    if (self.primitiveModel.primitiveModelType == CT_GLKVCItemTypeRectangle){
         [self updateRectangle];
     }
     

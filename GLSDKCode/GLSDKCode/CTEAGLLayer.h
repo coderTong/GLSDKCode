@@ -17,5 +17,4 @@
 
 - (void)displayPixelBuffer:(CVPixelBufferRef)pixelBuffer;
 
-
 @end

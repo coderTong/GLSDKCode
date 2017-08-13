@@ -18,11 +18,7 @@
     CVOpenGLESTextureRef _lumaTexture;
     CVOpenGLESTextureRef _chromaTexture;
     CVOpenGLESTextureCacheRef _videoTextureCache;
-
-   
 }
-//@property (nonatomic, strong)
-
 @property (nonatomic,assign) float layerRatio;
 @property GLuint program;
 @property GLuint timeStampProgram;
@@ -41,8 +37,6 @@
         self.opaque = TRUE;
         self.drawableProperties = @{ kEAGLDrawablePropertyRetainedBacking :[NSNumber numberWithBool:YES],
                                      kEAGLDrawablePropertyColorFormat : kEAGLColorFormatRGBA8};
-        
-        
         self.contentsScale = [[UIScreen mainScreen] scale];
         [view.layer addSublayer:self];
         _layerRatio = 1.0;
@@ -86,7 +80,7 @@
     [self.glSettingModel.context presentRenderbuffer:GL_RENDERBUFFER];
     
     glDisable(GL_BLEND);
-    
+    CFRelease(pixelBuffer);
     [EAGLContext setCurrentContext:self.glSettingModel.context];
 }
 
@@ -105,12 +99,11 @@
     return YES;
 }
 
-//--------------------
+#pragma mark - Method
 - (void)setupGL
 {    
     [self.glSettingModel setupGL];
 }
-
 
 - (void)refreshTextureWith:(CVPixelBufferRef)pixelBuffer
 {
@@ -174,11 +167,8 @@
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    
-    CFRelease(pixelBuffer);
+   
 }
-
-
 
 - (void)cleanUpTextures
 {

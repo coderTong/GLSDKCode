@@ -99,12 +99,9 @@ void rectangle(long *numVertices, long *numIndices,GLfloat **vVertices,GLfloat *
     _primitiveModelType = primitiveModelType;
     if (_primitiveModelType == CT_GLKVCItemTypeRectangle){
         _cam_scale = 2.0;
-        _cam_scaleOriginal = _cam_scale;
         _near = 1.0;
         _far = 4.0;
         
-        _radius = 0.0;
-        _crosscutNum = 10;
         [self resettingEyePointOrigin];
         
         _centerX = 0;

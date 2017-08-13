@@ -25,8 +25,7 @@ typedef NS_OPTIONS(NSUInteger, CT_GLPrimitiveModelType) {
 @property (assign, nonatomic) GLfloat *vTextCoord;
 @property (assign, nonatomic) GLfloat *vVertices;
 
-@property (assign, nonatomic) float cam_scale;//
-@property (assign, nonatomic) float cam_scaleOriginal;
+@property (assign, nonatomic) float cam_scale;
 @property (assign, nonatomic) float near; //
 @property (assign, nonatomic) float far;//
 
@@ -41,8 +40,6 @@ typedef NS_OPTIONS(NSUInteger, CT_GLPrimitiveModelType) {
 @property (assign, nonatomic) GLfloat eyeZ;
 @property (assign, nonatomic) GLfloat eyeY;
 
-@property (assign, nonatomic) GLfloat radius;
-@property (assign, nonatomic) int crosscutNum;
 @property (assign, nonatomic) CT_GLPrimitiveModelType primitiveModelType;
 
 

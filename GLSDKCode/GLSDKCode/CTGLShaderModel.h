@@ -9,7 +9,6 @@
 #import <Foundation/Foundation.h>
 #import <GLKit/GLKit.h>
 
-
 enum
 {
     UNIFORM_Y = 0,
