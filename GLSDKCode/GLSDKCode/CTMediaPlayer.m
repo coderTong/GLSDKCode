@@ -47,7 +47,7 @@ static void *AVPlayerItemStatusContext = &AVPlayerItemStatusContext;
 {
     self = [super init];
     if (self) {
-        self.decode_queue =  dispatch_queue_create("CTMediaPlayer.codetomwu.com", DISPATCH_QUEUE_SERIAL);
+        self.decode_queue =  dispatch_queue_create("CTMediaPlayer.codertomwu.com", DISPATCH_QUEUE_SERIAL);
         
         [self setVideoURL:mediaUrl];
         self.renderlayer = [[CTEAGLLayer alloc]initWithDrawable:renderView];
