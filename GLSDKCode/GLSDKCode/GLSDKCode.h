@@ -17,3 +17,8 @@ FOUNDATION_EXPORT const unsigned char GLSDKCodeVersionString[];
 // In this header, you should import all the public headers of your framework using statements like #import <GLSDKCode/PublicHeader.h>
 
 
+#import <GLSDKCode/CTMediaPlayer.h>
+#import <GLSDKCode/CTEAGLLayer.h>
+#import <GLSDKCode/CTGLPrimitiveModel.h>
+#import <GLSDKCode/CTGLSettingModel.h>
+#import <GLSDKCode/CTGLShaderModel.h>

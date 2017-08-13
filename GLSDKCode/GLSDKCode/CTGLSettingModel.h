@@ -13,13 +13,20 @@
 
 @optional
 - (BOOL)createVideoTextureCacheHasErr;
+- (void)renderbufferStorage;
 @end
 
 @interface CTGLSettingModel : NSObject
 
 @property (nonatomic, weak) id <CTGLSettingModelDelegate> delegate;
 
-- (instancetype)initWithType:(CT_GLPrimitiveModelType)type;
+@property (nonatomic, strong)  EAGLContext * context;
+
+- (instancetype)initWithType:(CT_GLPrimitiveModelType)type delegate:(id<CTGLSettingModelDelegate>)delegate;
 
 - (BOOL)setupGL;
+
+- (void)updatePreferredConversionWith:(CVPixelBufferRef)pixelBuffer;
+
+- (void)updateVertexBuffer;
 @end

@@ -9,24 +9,25 @@
 #import "CTEAGLLayer.h"
 #import <mach/mach_time.h>
 #import <GLKit/GLKit.h>
-//#include <OpenGLES/ES2/glext.h>
+#import "CTGLSettingModel.h"
 
 @import OpenGLES;
 
-@interface CTEAGLLayer ()
+@interface CTEAGLLayer ()<CTGLSettingModelDelegate>
 {
     CVOpenGLESTextureRef _lumaTexture;
     CVOpenGLESTextureRef _chromaTexture;
     CVOpenGLESTextureCacheRef _videoTextureCache;
 
+   
 }
-@property (nonatomic, strong) EAGLContext * context;
+//@property (nonatomic, strong)
 
 @property (nonatomic,assign) float layerRatio;
 @property GLuint program;
 @property GLuint timeStampProgram;
 
-
+@property (nonatomic, strong) CTGLSettingModel * glSettingModel;
 @end
 
 @implementation CTEAGLLayer
@@ -41,10 +42,6 @@
         self.drawableProperties = @{ kEAGLDrawablePropertyRetainedBacking :[NSNumber numberWithBool:YES],
                                      kEAGLDrawablePropertyColorFormat : kEAGLColorFormatRGBA8};
         
-        _context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
-        [_context renderbufferStorage:GL_RENDERBUFFER fromDrawable:self];
-        
-        [EAGLContext setCurrentContext:_context];
         
         self.contentsScale = [[UIScreen mainScreen] scale];
         [view.layer addSublayer:self];
@@ -54,17 +51,52 @@
     return self;
 }
 
+#pragma mark - GET/SET ---Lazy load
 
-- (void)displayPixelBuffer:(CVPixelBufferRef)pixelBuffer
+- (CTGLSettingModel *)glSettingModel
 {
-    
+    if (!_glSettingModel) {
+        _glSettingModel = [[CTGLSettingModel alloc] initWithType:CT_GLKVCItemTypeRectangle delegate:self];
+    }
+    return _glSettingModel;
+}
+
+#pragma mark - publicMethod
+
+- (void)renderbufferStorage
+{
+    [self.glSettingModel.context renderbufferStorage:GL_RENDERBUFFER fromDrawable:self];
 }
 
 
+
+
+- (void)displayPixelBuffer:(CVPixelBufferRef)pixelBuffer
+{
+    if (pixelBuffer == NULL) {
+        return;
+    }
+    
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    
+    [self refreshTextureWith:pixelBuffer];
+    [self.glSettingModel updatePreferredConversionWith:pixelBuffer];
+    [self.glSettingModel updateVertexBuffer];
+    [self.glSettingModel.context presentRenderbuffer:GL_RENDERBUFFER];
+    
+    glDisable(GL_BLEND);
+    
+    [EAGLContext setCurrentContext:self.glSettingModel.context];
+}
+
+
+
+#pragma mark CTGLSettingModelDelegate
 - (BOOL)createVideoTextureCacheHasErr
 {
     if (!_videoTextureCache) {
-        CVReturn err = CVOpenGLESTextureCacheCreate(kCFAllocatorDefault, NULL, _context, NULL, &_videoTextureCache);
+        CVReturn err = CVOpenGLESTextureCacheCreate(kCFAllocatorDefault, NULL, self.glSettingModel.context, NULL, &_videoTextureCache);
         if (err != noErr) {
             NSLog(@"Error at CVOpenGLESTextureCacheCreate %d", err);
             return YES;
@@ -74,6 +106,11 @@
 }
 
 //--------------------
+- (void)setupGL
+{    
+    [self.glSettingModel setupGL];
+}
+
 
 - (void)refreshTextureWith:(CVPixelBufferRef)pixelBuffer
 {
@@ -137,6 +174,8 @@
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    
+    CFRelease(pixelBuffer);
 }
 
 
@@ -154,5 +193,6 @@
     // Periodic texture cache flush every frame
     CVOpenGLESTextureCacheFlush(_videoTextureCache, 0);
 }
+
 
 @end

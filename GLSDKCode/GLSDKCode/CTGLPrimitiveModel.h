@@ -49,5 +49,5 @@ typedef NS_OPTIONS(NSUInteger, CT_GLPrimitiveModelType) {
 - (instancetype)initWithType:(CT_GLPrimitiveModelType)primitiveModelType;
 - (void)updateMatrix4MakeFrustumParameterWithType:(CT_GLPrimitiveModelType)primitiveModelType;
 - (void)deleteBuffer;
-
+- (void)enableItem;
 @end

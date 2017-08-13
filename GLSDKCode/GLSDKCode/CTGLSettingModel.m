@@ -43,17 +43,26 @@ static const GLfloat kColorConversion709[] = {
 @property (nonatomic, strong) CTGLShaderModel * shaderModel;
 @property (nonatomic, strong) CTGLPrimitiveModel * primitiveModel;
 @property (assign, nonatomic) GLKMatrix4 modelViewProjectionMatrix;
+
+@property (nonatomic, assign) CT_GLPrimitiveModelType primitiveModelType;
+
+
 @end
 
 @implementation CTGLSettingModel
 
 
-- (instancetype)initWithType:(CT_GLPrimitiveModelType)type
+- (instancetype)initWithType:(CT_GLPrimitiveModelType)type delegate:(id<CTGLSettingModelDelegate>)delegate
 {
     self = [super init];
     
     if (self) {
-        
+        _primitiveModelType = type;
+        _preferredConversion = kColorConversion709;
+        _delegate = delegate;
+        [self.primitiveModel enableItem];
+        _context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
+        [EAGLContext setCurrentContext:_context];
     }
     
     return self;
@@ -71,6 +80,13 @@ static const GLfloat kColorConversion709[] = {
     return _shaderModel;
 }
 
+- (CTGLPrimitiveModel *)primitiveModel
+{
+    if (!_primitiveModel) {
+        _primitiveModel = [[CTGLPrimitiveModel alloc]initWithType:_primitiveModelType];
+    }
+    return _primitiveModel;
+}
 
 
 # pragma mark - OpenGL setup
@@ -88,10 +104,14 @@ static const GLfloat kColorConversion709[] = {
     glGenRenderbuffers(1, &_colorBufferHandle);
     glBindRenderbuffer(GL_RENDERBUFFER, _colorBufferHandle);
     
+    if (self.delegate && [self.delegate respondsToSelector:@selector(renderbufferStorage)]) {
+        [self.delegate renderbufferStorage];
+    }
+    
     
     glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_WIDTH, &_backingWidth);
     glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_HEIGHT, &_backingHeight);
-    
+
     glBindRenderbuffer(GL_RENDERBUFFER, _depthbufferHandle);
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, _depthbufferHandle);
     glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, _backingWidth, _backingHeight);
@@ -104,15 +124,17 @@ static const GLfloat kColorConversion709[] = {
 
 - (BOOL)setupGL
 {
+    // 1. 设置buffers
+    // 2. 加载着色器
     [self setupBuffers];
     if(![self.shaderModel loadShaders])
         return NO;
   
     
     glUseProgram(self.shaderModel.program);
-    glUniform1i(uniforms[UNIFORM_Y], 0);
-    glUniform1i(uniforms[UNIFORM_UV], 1);
-    glUniformMatrix3fv(uniforms[UNIFORM_COLOR_CONVERSION_MATRIX], 1, GL_FALSE, _preferredConversion);
+    glUniform1i([self.shaderModel.uniforms[UNIFORM_Y] intValue], 0);
+    glUniform1i([self.shaderModel.uniforms[UNIFORM_UV] intValue], 1);
+    glUniformMatrix3fv([self.shaderModel.uniforms[UNIFORM_COLOR_CONVERSION_MATRIX] intValue], 1, GL_FALSE, _preferredConversion);
     
     if (self.delegate && [self.delegate respondsToSelector:@selector(createVideoTextureCacheHasErr)]) {
         if ([self.delegate createVideoTextureCacheHasErr]) {
@@ -120,7 +142,7 @@ static const GLfloat kColorConversion709[] = {
         }
     }
     
-    glUniformMatrix3fv(uniforms[UNIFORM_COLOR_CONVERSION_MATRIX], 1, GL_FALSE, _preferredConversion);
+    glUniformMatrix3fv([self.shaderModel.uniforms[UNIFORM_COLOR_CONVERSION_MATRIX] intValue], 1, GL_FALSE, _preferredConversion);
     glGenTextures(1, &_textureID);
     glBindTexture(GL_TEXTURE_2D, _textureID);
     
@@ -131,9 +153,12 @@ static const GLfloat kColorConversion709[] = {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glBindTexture(GL_TEXTURE_2D, 0);
     
+    // 3. 绘制图元
+    [self primitiveModel];
     
     return YES;
 }
+
 
 - (void)tearDownBuffers
 {
@@ -159,18 +184,18 @@ static const GLfloat kColorConversion709[] = {
 - (void)updateRectangle
 {
     
-    float cam_scale = _primitiveModel.cam_scale;
-    float near = _primitiveModel.near;
-    float far = _primitiveModel.far;
+    float cam_scale = self.primitiveModel.cam_scale;
+    float near = self.primitiveModel.near;
+    float far = self.primitiveModel.far;
     GLKMatrix4 projectionMatrix = GLKMatrix4MakeFrustum(-1.0f /cam_scale, 1.0f/ cam_scale, -1.0f /cam_scale, 1.0f/cam_scale, near, far);
     GLKMatrix4 modelViewMatrix = GLKMatrix4Identity;
     
-    GLKMatrix4 mViewMatrix = GLKMatrix4MakeLookAt(_primitiveModel.eyeX, _primitiveModel.eyeY, _primitiveModel.eyeZ,
-                                                  _primitiveModel.centerX, _primitiveModel.centerY, _primitiveModel.centerZ,
-                                                  _primitiveModel.upX, _primitiveModel.upY, _primitiveModel.upZ);
+    GLKMatrix4 mViewMatrix = GLKMatrix4MakeLookAt(self.primitiveModel.eyeX, self.primitiveModel.eyeY, self.primitiveModel.eyeZ,
+                                                  self.primitiveModel.centerX, self.primitiveModel.centerY, self.primitiveModel.centerZ,
+                                                  self.primitiveModel.upX, self.primitiveModel.upY, self.primitiveModel.upZ);
     GLKMatrix4 matrix = GLKMatrix4Multiply(modelViewMatrix, mViewMatrix);
     self.modelViewProjectionMatrix = GLKMatrix4Multiply(projectionMatrix, matrix);
-    glUniformMatrix4fv(uniforms[UNIFORM_MODELVIEWPROJECTION_MATRIX], 1, GL_FALSE, self.modelViewProjectionMatrix.m);
+    glUniformMatrix4fv([self.shaderModel.uniforms[UNIFORM_MODELVIEWPROJECTION_MATRIX] intValue], 1, GL_FALSE, self.modelViewProjectionMatrix.m);
     
 }
 
@@ -194,7 +219,7 @@ static const GLfloat kColorConversion709[] = {
     
     
     glDrawElements(GL_TRIANGLES, (int)self.primitiveModel.numIndices, GL_UNSIGNED_SHORT, 0);
-    [_primitiveModel deleteBuffer];
+    [self.primitiveModel deleteBuffer];
     
 }
 
@@ -213,5 +238,19 @@ static const GLfloat kColorConversion709[] = {
     
 }
 
-
+- (void)updateVertexBuffer
+{
+    glUseProgram(self.shaderModel.program);
+    glUniformMatrix3fv([self.shaderModel.uniforms[UNIFORM_COLOR_CONVERSION_MATRIX] intValue], 1, GL_FALSE, _preferredConversion);
+    
+    [self.primitiveModel enableItem];
+    glEnableVertexAttribArray(self.shaderModel.vertexTexCoordAttributeIndex);
+    glVertexAttribPointer(self.shaderModel.vertexTexCoordAttributeIndex, 2, GL_FLOAT, GL_FALSE, sizeof(GLfloat)*2, NULL);
+    
+    if (self.primitiveModel.primitiveModelType == CT_GLKVCItemTypeRectangle){// 圆
+        [self updateRectangle];
+    }
+    
+    [self updateDrawElement];
+}
 @end

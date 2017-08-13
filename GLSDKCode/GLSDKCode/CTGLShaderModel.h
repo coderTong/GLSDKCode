@@ -8,14 +8,15 @@
 
 #import <Foundation/Foundation.h>
 #import <GLKit/GLKit.h>
+
+
 enum
 {
-    UNIFORM_Y,
-    UNIFORM_UV,
-    UNIFORM_COLOR_CONVERSION_MATRIX,
-    UNIFORM_MODELVIEWPROJECTION_MATRIX
+    UNIFORM_Y = 0,
+    UNIFORM_UV = 1,
+    UNIFORM_COLOR_CONVERSION_MATRIX = 2,
+    UNIFORM_MODELVIEWPROJECTION_MATRIX = 3
 };
-static GLint uniforms[UNIFORM_MODELVIEWPROJECTION_MATRIX + 1];
 
 @interface CTGLShaderModel : NSObject
 
@@ -23,6 +24,7 @@ static GLint uniforms[UNIFORM_MODELVIEWPROJECTION_MATRIX + 1];
 @property (assign, nonatomic) GLuint vertexTexCoordAttributeIndex;
 @property (nonatomic, strong) NSMutableArray *attributes;
 
-- (BOOL)loadShaders;
+@property (nonatomic, strong) NSMutableArray * uniforms;
 
+- (BOOL)loadShaders;
 @end

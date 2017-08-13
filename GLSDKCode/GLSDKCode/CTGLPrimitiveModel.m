@@ -89,6 +89,13 @@ void rectangle(long *numVertices, long *numIndices,GLfloat **vVertices,GLfloat *
 
 - (void)updateMatrix4MakeFrustumParameterWithType:(CT_GLPrimitiveModelType)primitiveModelType
 {
+    self.primitiveModelType = primitiveModelType;
+}
+
+#pragma mark - Set Get
+
+- (void)setPrimitiveModelType:(CT_GLPrimitiveModelType)primitiveModelType
+{
     _primitiveModelType = primitiveModelType;
     if (_primitiveModelType == CT_GLKVCItemTypeRectangle){
         _cam_scale = 2.0;
@@ -106,19 +113,6 @@ void rectangle(long *numVertices, long *numIndices,GLfloat **vVertices,GLfloat *
         _upX = 0;
         _upY = 1;
         _upZ = 0;
-        
-        
-    }
-}
-
-#pragma mark - Set Get
-
-- (void)setPrimitiveModelType:(CT_GLPrimitiveModelType)primitiveModelType
-{
-    _primitiveModelType = primitiveModelType;
-    
-    if (_primitiveModelType == CT_GLKVCItemTypeRectangle){
-        [self updateMatrix4MakeFrustumParameterWithType:_primitiveModelType];
         rectangle(&_numVerticesTextCoord, &_numIndices, &_vVertices, &_vTextCoord, &_indices);
         
     }

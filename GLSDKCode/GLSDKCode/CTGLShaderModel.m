@@ -8,7 +8,18 @@
 
 #import "CTGLShaderModel.h"
 
+
 @implementation CTGLShaderModel
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        _attributes = [NSMutableArray array];
+        _uniforms = [NSMutableArray array];
+    }
+    return self;
+}
 
 /*
  加载着色器程序
@@ -22,14 +33,14 @@
     self.program = glCreateProgram();
     
     // Create and compile the vertex shader.
-    vertShaderURL = [[NSBundle mainBundle] URLForResource:@"3DShader" withExtension:@"vsh"];
+    vertShaderURL = [[NSBundle mainBundle] URLForResource:@"shader" withExtension:@"vsh"];
     if (![self compileShader:&vertShader type:GL_VERTEX_SHADER filePathURL:vertShaderURL]) {
         NSLog(@"Failed to compile vertex shader");
         return NO;
     }
     
     // Create and compile fragment shader.
-    fragShaderURL = [[NSBundle mainBundle] URLForResource:@"3DShader" withExtension:@"fsh"];
+    fragShaderURL = [[NSBundle mainBundle] URLForResource:@"shader" withExtension:@"fsh"];
     if (![self compileShader:&fragShader type:GL_FRAGMENT_SHADER filePathURL:fragShaderURL]) {
         NSLog(@"Failed to compile fragment shader");
         return NO;
@@ -68,12 +79,14 @@
     
     self.vertexTexCoordAttributeIndex = [self attributeIndex:@"texCoord"];
     
-    // 顶点着色器里面的 uniforms
-    uniforms[UNIFORM_MODELVIEWPROJECTION_MATRIX] = [self uniformIndex:@"modelViewProjectionMatrix"];
-    // 片元着色器里面的 YUV
-    uniforms[UNIFORM_Y] = [self uniformIndex:@"SamplerY"];
-    uniforms[UNIFORM_UV] = [self uniformIndex:@"SamplerUV"];
-    uniforms[UNIFORM_COLOR_CONVERSION_MATRIX] = [self uniformIndex:@"colorConversionMatrix"];
+    _uniforms[UNIFORM_Y] =@([self uniformIndex:@"SamplerY"]);;
+    _uniforms[UNIFORM_UV] =@([self uniformIndex:@"SamplerUV"]);
+    _uniforms[UNIFORM_COLOR_CONVERSION_MATRIX] = @([self uniformIndex:@"colorConversionMatrix"]);
+    _uniforms[UNIFORM_MODELVIEWPROJECTION_MATRIX] = @([self uniformIndex:@"modelViewProjectionMatrix"]);
+    
+    
+ 
+    
     
     return YES;
 }
@@ -92,7 +105,8 @@
 }
 
 - (GLuint)uniformIndex:(NSString *)uniformName {
-    return glGetUniformLocation(self.program, [uniformName UTF8String]);
+    GLuint handle = glGetUniformLocation(self.program, [uniformName UTF8String]);
+    return handle;
 }
 
 

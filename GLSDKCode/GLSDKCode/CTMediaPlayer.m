@@ -8,6 +8,7 @@
 
 #import "CTMediaPlayer.h"
 #import <AVFoundation/AVFoundation.h>
+#import "CTEAGLLayer.h"
 
 #define ONE_FRAME_DURATION 0.033
 
@@ -32,6 +33,12 @@ static void *AVPlayerItemStatusContext = &AVPlayerItemStatusContext;
 @property (strong, nonatomic) id timeObserver;
 @property (assign, nonatomic) CGFloat mRestoreAfterScrubbingRate;
 @property (assign, nonatomic) BOOL seekToZeroBeforePlay;
+@property (nonatomic, strong) UIView *drawable;
+@property (nonatomic, strong) CTEAGLLayer * renderlayer;
+
+@property (nonatomic, strong) dispatch_source_t timer;
+@property (strong, nonatomic) dispatch_queue_t decode_queue;
+
 @end
 
 
@@ -40,7 +47,18 @@ static void *AVPlayerItemStatusContext = &AVPlayerItemStatusContext;
 {
     self = [super init];
     if (self) {
+        self.decode_queue =  dispatch_queue_create("CTMediaPlayer.codetomwu.com", DISPATCH_QUEUE_SERIAL);
+        
         [self setVideoURL:mediaUrl];
+        self.renderlayer = [[CTEAGLLayer alloc]initWithDrawable:renderView];
+        [self.renderlayer setFrame:renderView.bounds];
+        [self.renderlayer setupGL];
+        self.drawable = renderView;
+        [self setupVideoPlaybackForURL:mediaUrl];
+        [self startTimer];
+        
+        
+        
     }
     return self;
 }
@@ -48,8 +66,30 @@ static void *AVPlayerItemStatusContext = &AVPlayerItemStatusContext;
 - (void)play
 {
     
+    [self.player play];
 }
 
+- (void)startTimer
+{
+    __weak typeof(self) weakSelf = self;
+    self.timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, self.decode_queue);
+    dispatch_source_set_timer(self.timer, dispatch_walltime(NULL, 0), 30 * NSEC_PER_MSEC, 10 * NSEC_PER_MSEC); // TODO , magic
+    dispatch_source_set_event_handler(self.timer, ^{
+        CVPixelBufferRef pixelBuffer = [weakSelf retrievePixelBufferToDraw];
+        
+        [weakSelf.renderlayer displayPixelBuffer:pixelBuffer];
+        
+    });
+    
+    dispatch_resume(self.timer);
+
+}
+
+- (CVPixelBufferRef)retrievePixelBufferToDraw {
+    CVPixelBufferRef pixelBuffer = [self.videoOutput copyPixelBufferForItemTime:[self.playerItem currentTime] itemTimeForDisplay:nil];
+
+    return pixelBuffer;
+}
 
 - (void)setupVideoPlaybackForURL:(NSURL*)url {
     NSDictionary *pixelBuffAttributes = @{(id)kCVPixelBufferPixelFormatTypeKey: @(kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange)};
@@ -123,7 +163,46 @@ static void *AVPlayerItemStatusContext = &AVPlayerItemStatusContext;
                        });
     }];
 }
-
+- (void)observeValueForKeyPath:(NSString*)path
+                      ofObject:(id)object
+                        change:(NSDictionary*)change
+                       context:(void*)context {
+    
+    if (context == AVPlayerDemoPlaybackViewControllerStatusObservationContext) {
+       
+        
+        AVPlayerStatus status = [[change objectForKey:NSKeyValueChangeNewKey] integerValue];
+        switch (status) {
+               
+                
+            case AVPlayerStatusUnknown: {
+                [self removePlayerTimeObserver];
+                
+                
+                break;
+            }
+            case AVPlayerStatusReadyToPlay: {
+                
+                
+                break;
+            }
+            case AVPlayerStatusFailed: {
+                AVPlayerItem *playerItem = (AVPlayerItem *)object;
+                
+                NSLog(@"Error fail : %@", playerItem.error);
+                break;
+            }
+        }
+    } else if (context == AVPlayerDemoPlaybackViewControllerRateObservationContext) {
+        
+        NSLog(@"AVPlayerDemoPlaybackViewControllerRateObservationContext");
+    } else if (context == AVPlayerDemoPlaybackViewControllerCurrentItemObservationContext) {
+        
+        NSLog(@"AVPlayerDemoPlaybackViewControllerCurrentItemObservationContext");
+    } else {
+        [super observeValueForKeyPath:path ofObject:object change:change context:context];
+    }
+}
 
 - (void)removePlayerTimeObserver {
     if (self.timeObserver) {

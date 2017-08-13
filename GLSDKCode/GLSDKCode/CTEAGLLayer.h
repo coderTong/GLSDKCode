@@ -12,6 +12,10 @@
 
 @interface CTEAGLLayer : CAEAGLLayer
 - (instancetype)initWithDrawable:(UIView *)view;
+
+- (void)setupGL;
+
 - (void)displayPixelBuffer:(CVPixelBufferRef)pixelBuffer;
+
 
 @end
